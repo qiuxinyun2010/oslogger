@@ -10,13 +10,13 @@
 
 // ==/UserScript==
 
-(function() {
+(function () {
   "use strict";
   var module,
     window,
     define,
-    renderjson = (function() {
-      var themetext = function(/* [class, text]+ */) {
+    renderjson = (function () {
+      var themetext = function (/* [class, text]+ */) {
         var spans = [];
         while (arguments.length)
           spans.push(
@@ -27,7 +27,7 @@
           );
         return spans;
       };
-      var append = function(/* el, ... */) {
+      var append = function (/* el, ... */) {
         var el = Array.prototype.shift.call(arguments);
         for (var a = 0; a < arguments.length; a++)
           if (arguments[a].constructor == Array)
@@ -35,23 +35,23 @@
           else el.appendChild(arguments[a]);
         return el;
       };
-      var prepend = function(el, child) {
+      var prepend = function (el, child) {
         el.insertBefore(child, el.firstChild);
         return el;
       };
-      var isempty = function(obj, pl) {
+      var isempty = function (obj, pl) {
         var keys = pl || Object.keys(obj);
         for (var i in keys)
           if (Object.hasOwnProperty.call(obj, keys[i])) return false;
         return true;
       };
-      var text = function(txt) {
+      var text = function (txt) {
         return document.createTextNode(txt);
       };
-      var div = function() {
+      var div = function () {
         return document.createElement("div");
       };
-      var span = function(classname) {
+      var span = function (classname) {
         var s = document.createElement("span");
         if (classname) s.className = classname;
         return s;
@@ -61,7 +61,7 @@
         if (classname) a.className = classname;
         a.appendChild(text(txt));
         a.href = "#";
-        a.onclick = function(e) {
+        a.onclick = function (e) {
           callback();
           if (e) e.stopPropagation();
           return false;
@@ -72,16 +72,16 @@
       function _renderjson(json, indent, dont_indent, show_level, options) {
         var my_indent = dont_indent ? "" : indent;
 
-        var disclosure = function(open, placeholder, close, type, builder) {
+        var disclosure = function (open, placeholder, close, type, builder) {
           var content;
           var empty = span(type);
-          var show = function() {
+          var show = function () {
             if (!content)
               append(
                 empty.parentNode,
                 (content = prepend(
                   builder(),
-                  A(options.hide, "disclosure", function() {
+                  A(options.hide, "disclosure", function () {
                     content.style.display = "none";
                     empty.style.display = "inline";
                   })
@@ -113,7 +113,7 @@
             json.substr(0, options.max_string_length) + " ...",
             '"',
             "string",
-            function() {
+            function () {
               return append(
                 span("string"),
                 themetext(null, my_indent, "string", JSON.stringify(json))
@@ -136,7 +136,7 @@
             options.collapse_msg(json.length),
             "]",
             "array",
-            function() {
+            function () {
               var as = append(
                 span("array"),
                 themetext("array syntax", "[", null, "\n")
@@ -169,7 +169,7 @@
           options.collapse_msg(Object.keys(json).length),
           "}",
           "object",
-          function() {
+          function () {
             var os = append(
               span("object"),
               themetext("object syntax", "{", null, "\n")
@@ -212,9 +212,9 @@
         options.replacer =
           typeof options.replacer == "function"
             ? options.replacer
-            : function(k, v) {
-                return v;
-              };
+            : function (k, v) {
+              return v;
+            };
         var pre = append(
           document.createElement("pre"),
           _renderjson(json, "", false, options.show_to_level, options)
@@ -222,43 +222,43 @@
         pre.className = "renderjson";
         return pre;
       };
-      renderjson.set_icons = function(show, hide) {
+      renderjson.set_icons = function (show, hide) {
         renderjson.options.show = show;
         renderjson.options.hide = hide;
         return renderjson;
       };
-      renderjson.set_show_to_level = function(level) {
+      renderjson.set_show_to_level = function (level) {
         renderjson.options.show_to_level =
           typeof level == "string" && level.toLowerCase() === "all"
             ? Number.MAX_VALUE
             : level;
         return renderjson;
       };
-      renderjson.set_max_string_length = function(length) {
+      renderjson.set_max_string_length = function (length) {
         renderjson.options.max_string_length =
           typeof length == "string" && length.toLowerCase() === "none"
             ? Number.MAX_VALUE
             : length;
         return renderjson;
       };
-      renderjson.set_sort_objects = function(sort_bool) {
+      renderjson.set_sort_objects = function (sort_bool) {
         renderjson.options.sort_objects = sort_bool;
         return renderjson;
       };
-      renderjson.set_replacer = function(replacer) {
+      renderjson.set_replacer = function (replacer) {
         renderjson.options.replacer = replacer;
         return renderjson;
       };
-      renderjson.set_collapse_msg = function(collapse_msg) {
+      renderjson.set_collapse_msg = function (collapse_msg) {
         renderjson.options.collapse_msg = collapse_msg;
         return renderjson;
       };
-      renderjson.set_property_list = function(prop_list) {
+      renderjson.set_property_list = function (prop_list) {
         renderjson.options.property_list = prop_list;
         return renderjson;
       };
       // Backwards compatiblity. Use set_show_to_level() for new code.
-      renderjson.set_show_by_default = function(show) {
+      renderjson.set_show_by_default = function (show) {
         renderjson.options.show_to_level = show ? Number.MAX_VALUE : 0;
         return renderjson;
       };
@@ -269,7 +269,7 @@
       renderjson.set_max_string_length("none");
       renderjson.set_replacer(void 0);
       renderjson.set_property_list(void 0);
-      renderjson.set_collapse_msg(function(len) {
+      renderjson.set_collapse_msg(function (len) {
         return len + " item" + (len == 1 ? "" : "s");
       });
       return renderjson;
@@ -368,8 +368,8 @@
 
     `);
 
-    renderjson.set_icons(' ', ' ');
-    renderjson.set_show_to_level(1);
+  renderjson.set_icons(' ', ' ');
+  renderjson.set_show_to_level(1);
 
   // 创建父容器
   const container = document.createElement("div");
@@ -446,13 +446,13 @@
   popupTitle.appendChild(pingButton);
   pingButton.addEventListener("click", () => {
     changePingStatus();
-    if(logger.showPingMessages){
+    if (logger.showPingMessages) {
       pingButton.textContent = "屏蔽心跳消息";
-    }else{
+    } else {
       pingButton.textContent = "显示心跳消息";
     }
-    
-    
+
+
   });
 
   // 创建列表容器
@@ -465,45 +465,45 @@
   // 添加拖动功能
   let isDragging = false;
   let offsetX, offsetY;
-  let  preparingDrag = false;
+  let preparingDrag = false;
 
   popupTitle.addEventListener("mousedown", e => {
-    isDragging = false;  
-    offsetX = e.clientX ;
-    offsetY = e.clientY ;
+    isDragging = false;
+    offsetX = e.clientX;
+    offsetY = e.clientY;
     preparingDrag = true;
   });
-  toggleButton.addEventListener('mousedown', e => {  
-    isDragging = false;  
-    offsetX = e.clientX ;
-    offsetY = e.clientY ;
+  toggleButton.addEventListener('mousedown', e => {
+    isDragging = false;
+    offsetX = e.clientX;
+    offsetY = e.clientY;
     preparingDrag = true;
-  });  
-    
-  document.addEventListener('mousemove', e => {  
-      if(!preparingDrag) 
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!preparingDrag)
       return;
-      const dX = e.clientX - offsetX;  
-      const dY = e.clientY - offsetY; 
-     console.log("dXdY",dX,dY);
-     if(Math.abs(dX) > 5 || Math.abs(dY) > 5){
-      container.style.left = dX + container.getBoundingClientRect().left+ "px";
-      container.style.top = dY +  container.getBoundingClientRect().top+"px";
+    const dX = e.clientX - offsetX;
+    const dY = e.clientY - offsetY;
+    //  console.log("dXdY",dX,dY);
+    if (Math.abs(dX) > 5 || Math.abs(dY) > 5) {
+      container.style.left = dX + container.getBoundingClientRect().left + "px";
+      container.style.top = dY + container.getBoundingClientRect().top + "px";
       isDragging = true;
       offsetX = e.clientX;
       offsetY = e.clientY;
-     }
-  });  
-    
-  document.addEventListener('mouseup', e => {  
+    }
+  });
+
+  document.addEventListener('mouseup', e => {
     // console.log("mouseup");
-    if(!isDragging){
+    if (!isDragging) {
       buttonDiv.style.display = "none";
       popupDiv.style.display = "block";
     }
-    isDragging = false; 
-    preparingDrag = false; 
-  });  
+    isDragging = false;
+    preparingDrag = false;
+  });
 
   class MyLogger {
     constructor(e, t, n, s, r, o, renderjson) {
@@ -572,7 +572,7 @@
 
       // console.log(n, m);
       let title = "<-- " + this.getPrettyTimeSpan() + t;
-    //   let content = JSON.stringify(e, null, this.debugMessagesSpace);
+      //   let content = JSON.stringify(e, null, this.debugMessagesSpace);
       this.addItem(title, e, "#67C23A");
     }
     getShouldMessageBeIgnoredBasedOnType(e) {
@@ -611,7 +611,7 @@
       listItem.appendChild(title);
       listItem.appendChild(content);
       // 添加点击事件监听器
-      title.addEventListener("click", function(event) {
+      title.addEventListener("click", function (event) {
         // 判断点击的元素是否为列表项
         // console.log("click listItem", event);
 
@@ -644,7 +644,7 @@
     ].removeConnectionHook(logger.getName());
   }
 
-  function changePingStatus(){
+  function changePingStatus() {
     logger.showPingMessages = !logger.showPingMessages;
   }
 })();
